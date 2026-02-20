@@ -1,0 +1,29 @@
+Step 1: Creating VPC
+1. Open the VPC dashboard and click on "Create VPC"
+2. Select "VPC and more".
+3. Give a name to the VPC e.g. Hello-World-vpc.
+4. In Availability Zones, choose 2.
+5. In Public as well as private subnets, choose 2.(One per AZ)
+6. For NAT Gateway, Zonal > choose in 1 AZ (for cost saving).
+7. For VPC endpoint, keep "S3 Gateway" enabled.
+8. Create VPC.
+
+
+
+Step 2: Security Groups ("Firewalls")
+1. Go to EC2 Console and click on security group.
+2. We need to create 3 security groups.
+  2.1 For the ALB: Configure inbound traffic from HTTP(80) and HTTPS(443) ports , source being 0.0.0.0/0, outbound traffic to all traffic.(ALB-SG)
+  2.2 For EC2 instance: Configure inbound traffic from HTTP(80), source being the security group created for ALB, outbound traffic to all traffic.(App-SG)
+  2.3 For RDS: Configure inbound traffic from MySQL/Aurora(3306), source being the security group created for EC2 instance and outbound traffic to all 			traffic.(DB-SG)
+
+
+
+Step 3: RDS Database ("Vault")
+1. Go to RDS Console and click on Subnet Groups.
+2. Click Create DB Subnet Group.
+3. Name: rds-private-subnet-group      Description: Subnets for private RDS access only.      VPC: Hello-World VPC
+4. Add subnets: AZ: Select two AZs used for EC2 instances.     Subnets: Select the Private Subnets associated with AZs.
+5. Launch the RDS DB: In RDS Console, Database > Create database. Choose creation method: Full configuration; Engine type: MySQL; Templates: Free Tier / Sandbox (1 instance) 		      Settings: DB instance identifier: hello-world-db	   Master username: admin     Password:(B!)Create a strong one and save it securely.
+ 		      Instance configuration: db.t4g.micro (Use Graviton2 chips- cheaper and faster)
+ 		      Connectivity: Compute resource: Don't connect to an EC2 compute resource   VPC: Hello-World-VPC   DB Subnet Group: rds-private-subnet-				    group     Public access: No      VPC security group: Choose existing      Existing VPC security groups: DB-SG
