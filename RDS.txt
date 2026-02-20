@@ -23,7 +23,11 @@ Step 3: RDS Database ("Vault")
 1. Go to RDS Console and click on Subnet Groups.
 2. Click Create DB Subnet Group.
 3. Name: rds-private-subnet-group      Description: Subnets for private RDS access only.      VPC: Hello-World VPC
-4. Add subnets: AZ: Select two AZs used for EC2 instances.     Subnets: Select the Private Subnets associated with AZs.
-5. Launch the RDS DB: In RDS Console, Database > Create database. Choose creation method: Full configuration; Engine type: MySQL; Templates: Free Tier / Sandbox (1 instance) 		      Settings: DB instance identifier: hello-world-db	   Master username: admin     Password:(B!)Create a strong one and save it securely.
- 		      Instance configuration: db.t4g.micro (Use Graviton2 chips- cheaper and faster)
- 		      Connectivity: Compute resource: Don't connect to an EC2 compute resource   VPC: Hello-World-VPC   DB Subnet Group: rds-private-subnet-				    group     Public access: No      VPC security group: Choose existing      Existing VPC security groups: DB-SG
+4. Add subnets: AZ: Select two AZs used for EC2 instances. Subnets: Select the Private Subnets associated with AZs.
+5. Launch the RDS DB: In RDS Console, Database > Create database. Choose creation method: Full               configuration; Engine type: MySQL; Templates: Free Tier / Sandbox (1 instance) 
+   Settings: DB instance identifier: hello-world-db	  Master username: admin   Password:(B!)Create a         strong one and save it securely.
+ 	 Instance configuration: db.t4g.micro (Use Graviton2 chips- cheaper and faster)
+ 	 Connectivity: Compute resource: Don't connect to an EC2 compute resource   VPC: Hello-World-VPC   DB      Subnet Group: rds-private-subnet-				    group     Public access: No      VPC security group:         Choose existing      Existing VPC security groups: DB-SG
+
+
+Step 4: Launch Template and ASG
